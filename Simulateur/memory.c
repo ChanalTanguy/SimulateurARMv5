@@ -56,7 +56,11 @@ void memory_destroy(memory mem) {
 }
 
 int memory_read_byte(memory mem, uint32_t address, uint8_t *value) {
-    return -1;
+    if (address > (mem->size)-1){
+		return -1;
+	}
+	*value = *(mem->address + address);
+	return 0;
 }
 
 int memory_read_half(memory mem, int be, uint32_t address, uint16_t *value) {
