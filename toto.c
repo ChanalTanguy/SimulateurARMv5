@@ -8,5 +8,8 @@ int fonction_un {
 }
 
 int fonction_deux {
-	return 42;
+	int val;
+	val=42;
+	return val;
+	
 }
