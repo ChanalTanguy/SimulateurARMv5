@@ -4,7 +4,8 @@
 // il court il court . Bah je met n'importe koi juste pour faire un teste c fou hein .
 
 int fonction_un {
-	return 0;
+	int i = 0;
+	return i;
 }
 
 int fonction_deux {
