@@ -29,7 +29,11 @@ Contact: Guillaume.Huard@imag.fr
 #include "util.h"
 
 static int arm_execute_instruction(arm_core p) {
-    return 0;
+	uint32_t *instr;
+	adr_pc = arm_read_register(p, 15); // On récupère l'adresse contenue dans le PC (15 = Registre correspondant au PC)
+	arm_read_word(p, adr_pc, instr); // On lit l'instruction contenue à l'adresse récupérée
+	arm_write_register(p, 15, adr_pc+4); // On incrémente l'adresse contenue dans le PC de 4
+	return 0;
 }
 
 int arm_step(arm_core p) {
