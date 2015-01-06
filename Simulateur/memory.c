@@ -70,36 +70,86 @@ int memory_read_half(memory mem, int be, uint32_t address, uint16_t *value) {
 }
 
 int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
+  
+  if ( (address+3) > (mem->size)-1){
     return -1;
+  }
+  else 
+    {
+ 
+      *value = *(mem->address + address + 3)<<24;
+      *value += *(mem->address + address + 2)<<16;
+      *value += *(mem->address + address + 1)<<8;
+      *value += *(mem->address + address);
+
+      if ( be == 1)  
+	{;
+	  *value=reverse_4(*value);
+	}   
+    }
+  return 0;
 }
 
 int memory_write_byte(memory mem, uint32_t address, uint8_t value) {
     if (address > (mem->size)-1){
 		return -1;
 	}
-    *(mem->address + address)= value;
+    mem->address[address]= value;
     return 0;
 }
 
 int memory_write_half(memory mem, int be, uint32_t address, uint16_t value) {
 
-  uint8_t val
+  uint8_t val;
 
   if ( (address+1) > (mem->size)-1){
 		return -1;
 	}
-  else 
-    if ( be==1 )
-      *(mem->address + address)= value;
-    else {
-      val = value & masque_8;
-      *(mem->address + address)= value;
-      *(mem->address + address)<< 8;
-      *(mem->address + 8)=val;	
-   }
-
+  else
+    {
+      if ( be==0)
+      {mem->address[address]= value;
+	val = value>>8;
+	mem->address[address+1]= val;
+      }
+      else {
+	val = value>>8;
+	memory_write_byte( mem, address, val );
+	val = value;
+	memory_write_byte( mem, (address+1), val );
+      }
+    }
+  return 0;
 }
 
 int memory_write_word(memory mem, int be, uint32_t address, uint32_t value) {
+  
+   uint8_t val;
+  
+  if ( (address+3) > (mem->size)-1){
     return -1;
+  }
+  else 
+    {
+      if (be==0)
+	{
+	  *(mem->address+address)=value;
+	}
+      else 
+	{
+	  //  *(mem->address+address)=reverse_4(value);
+
+	  val = value >> 24 ;
+	  memory_write_byte( mem, address, val );
+	  val = value >> 16 ;
+	  memory_write_byte( mem, address+1, val );
+	  val = value >> 8 ;
+	  memory_write_byte( mem, address+2, val );
+	  val = value ;
+	  memory_write_byte( mem, address+3, value );
+
+}
+      
+    }
+  return 0;
 }
