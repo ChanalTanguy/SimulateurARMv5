@@ -66,7 +66,17 @@ int memory_read_byte(memory mem, uint32_t address, uint8_t *value) {
 }
 
 int memory_read_half(memory mem, int be, uint32_t address, uint16_t *value) {
-    return -1;
+    if (address > (mem->size)-2){
+		return -1;
+	}
+	*value = *(mem->address + address + 1)<<8;
+	*value += *(mem->address + address);
+	if (be == 1)  {
+		*value = reverse_2(*value);
+	} else if (be != 0) {
+		return -1;
+	}
+	return 0;
 }
 
 int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
@@ -83,7 +93,7 @@ int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
       *value += *(mem->address + address);
 
       if ( be == 1)  
-	{;
+	{
 	  *value=reverse_4(*value);
 	}   
     }
