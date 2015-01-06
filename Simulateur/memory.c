@@ -24,6 +24,8 @@ Contact: Guillaume.Huard@imag.fr
 #include "memory.h"
 #include "util.h"
 
+#define masque_8 128
+
 struct memory_data {
     int8_t *address;
     size_t size;
@@ -72,11 +74,30 @@ int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
 }
 
 int memory_write_byte(memory mem, uint32_t address, uint8_t value) {
-    return -1;
+    if (address > (mem->size)-1){
+		return -1;
+	}
+    *(mem->address + address)= value;
+    return 0;
 }
 
 int memory_write_half(memory mem, int be, uint32_t address, uint16_t value) {
-    return -1;
+
+  uint8_t val
+
+  if ( (address+1) > (mem->size)-1){
+		return -1;
+	}
+  else 
+    if ( be==1 )
+      *(mem->address + address)= value;
+    else {
+      val = value & masque_8;
+      *(mem->address + address)= value;
+      *(mem->address + address)<< 8;
+      *(mem->address + 8)=val;	
+   }
+
 }
 
 int memory_write_word(memory mem, int be, uint32_t address, uint32_t value) {
