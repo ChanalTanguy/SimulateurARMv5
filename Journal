@@ -1,0 +1,7 @@
+Lundi 05/01
+* Mise en place d'un GitHub pour gérer le projet
+* Création de la fonction de lecture d'un octet en mémoire
+
+Mardi 06/01
+* Création des autre fonctions d'écriture et de lecture en mémoire
+* Premières pistes de réalisation de la fonction d'exécution d'une instruction
