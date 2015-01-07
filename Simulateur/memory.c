@@ -83,7 +83,7 @@ int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
       *value += *(mem->address + address);
 
       if ( be == 1)  
-	{;
+	{
 	  *value=reverse_4(*value);
 	}   
     }
@@ -137,8 +137,6 @@ int memory_write_word(memory mem, int be, uint32_t address, uint32_t value) {
 	}
       else 
 	{
-	  //  *(mem->address+address)=reverse_4(value);
-
 	  val = value >> 24 ;
 	  memory_write_byte( mem, address, val );
 	  val = value >> 16 ;
@@ -147,7 +145,6 @@ int memory_write_word(memory mem, int be, uint32_t address, uint32_t value) {
 	  memory_write_byte( mem, address+2, val );
 	  val = value ;
 	  memory_write_byte( mem, address+3, value );
-
 }
       
     }
