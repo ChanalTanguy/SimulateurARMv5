@@ -78,6 +78,7 @@ static int arm_execute_instruction(arm_core p) {
 			case 0 : 
 				if (get_bits(instr,24,23) == 2) {
 					//Miscallenous instructions
+					//arm_data_processing_immediate_msr(p, instr);
 				} else {
 					if (get_bit(instr, 4) == 0) {
 						// Data processing immediate shift
@@ -95,6 +96,7 @@ static int arm_execute_instruction(arm_core p) {
 						// Undefined instruction
 					} else if (get_bits(instr,21,20) == 2) {
 						// Move immediate to status register
+						//arm_data_processing_immediate_msr(p, instr);
 					} else {
 						return -1;
 					}
