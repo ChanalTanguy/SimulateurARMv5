@@ -46,7 +46,7 @@ int arm_load_store(arm_core p, uint32_t ins) {
     { // ldr, ldrb, str, strb
        masque = get_bit(ins,20);
        if (masque == 0)
-	{ //str et strb
+	{ //str et strb 
 	  masque = get_bit(ins,22);
 	  if (masque == 0)
 	    {//str
