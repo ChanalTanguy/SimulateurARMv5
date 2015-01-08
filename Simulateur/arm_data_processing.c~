@@ -224,6 +224,10 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 }
 
 int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
+<<<<<<< HEAD
+	return UNDEFINED_INSTRUCTION;
+=======
+
 	// Voir page 226-227 
 
 	uint8_t operand;
@@ -277,4 +281,5 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 		}
 	}
 	return 0;
+>>>>>>> 1caa8c58d71181906fb39ce0ceb91f6bf0c7a367
 }
