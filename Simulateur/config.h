@@ -135,11 +135,7 @@
 #define PACKAGE_NAME "Arm_Simulator"
 
 /* Define to the full name and version of this package. */
-<<<<<<< HEAD
-#define PACKAGE_STRING "Arm_Simulator 1.1"
-=======
 #define PACKAGE_STRING "Arm_Simulator 1.3"
->>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "arm_simulator"
@@ -148,11 +144,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-<<<<<<< HEAD
-#define PACKAGE_VERSION "1.1"
-=======
 #define PACKAGE_VERSION "1.3"
->>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 
 /* Define to the type of arg 1 for `select'. */
 #define SELECT_TYPE_ARG1 int
@@ -170,11 +162,7 @@
 #define TIME_WITH_SYS_TIME 1
 
 /* Version number of package */
-<<<<<<< HEAD
-#define VERSION "1.1"
-=======
 #define VERSION "1.3"
->>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
