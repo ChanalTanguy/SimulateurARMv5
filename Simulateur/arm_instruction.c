@@ -49,7 +49,7 @@ static int arm_execute_instruction(arm_core p) {
 	int v = get_bit(flags, 28);
 
 	cond = get_bits(instr, 31, 28); // Récupération du code condition de l'instruction
-	int res;
+	int res = 0;
 	
 	switch (cond) {
 		case 0 : res = (z == 1); break;
