@@ -33,5 +33,58 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 }
 
 int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
-    return UNDEFINED_INSTRUCTION;
+
+	// Voir page 226-227 
+
+	uint8_t operand;
+	uint32_t byte_mask;
+	if (get_bit(ins, 25) == 1) {
+		operand = ror(get_bits(ins,7,0), (get_bits(ins,11,8)*2));
+	} else {
+		operand = get_bits(ins, 3, 0);
+	}
+	if ((operand && UnallocMask) != 0) {
+		return -1;
+	}
+
+	// Initialisation de la valeur du masque
+	uint8_t field_mask = get_bits(ins, 19, 16);
+	if (get_bit(field_mask, 0) == 1)
+		byte_mask = 0x000000FF;
+	else 
+		byte_mask = 0x00000000;
+	if (get_bit(field_mask, 1) == 1)
+		byte_mask |= 0x0000FF00;
+	else 
+		byte_mask |= 0x00000000;
+	if (get_bit(field_mask, 2) == 1)
+		byte_mask |= 0x00FF0000;
+	else 
+		byte_mask |= 0x00000000;
+	if (get_bit(field_mask, 3) == 1)
+		byte_mask |= 0xFF000000;
+	else 
+		byte_mask |= 0x00000000;
+
+	uint32_t mask;
+	if (get_bit(ins, 22) == 0) {
+		if (arm_in_a_privileged_mode(p)) {
+			if ((operand && StateMask)!= 0) {
+				return -1;
+			} else {
+				mask = (byte_mask && (UserMask || PrivMask));
+			}
+		} else {
+			mask = byte_mask && UserMask;
+		} 
+		arm_write_cpsr(p, (arm_read_cpsr(p) && ~(mask)) || (operand && mask));
+	} else {
+		if (arm_current_mode_has_spsr(p)) {
+			mask = byte_mask && (UserMask || PrivMask || StateMask);
+			arm_write_spsr(p, (arm_read_spsr(p) && ~(mask)) || (operand && mask));
+		} else {
+			return -1;
+		}
+	}
+	return 0;
 }

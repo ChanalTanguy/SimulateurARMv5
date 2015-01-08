@@ -3,8 +3,18 @@ Lundi 05/01
 * Création de la fonction de lecture d'un octet en mémoire
 
 Mardi 06/01
-* Création des autre fonctions d'écriture et de lecture en mémoire
-* Premières pistes de réalisation de la fonction d'exécution d'une instruction
+* Création des autres fonctions d'écriture et de lecture en mémoire
+* Premières pistes de réalisation de la fonction d'exécution d'une instruction (arm_execute_instruction)
 
 Mercredi 07/01
 * Création du journal de bord
+* Gestion des conditions d'exécution (champ [cond] de l'instruction) dans la fonction d'exécution d'une instruction
+* Début d'écriture des fonctions correspondant aux instructions de traitement de données (dans arm_data_processing)
+* Gestion du choix de la fonction à éxecuter selon l'instruction lue dans la fonction d'exécution d'une instruction
+
+Jeudi 08/01
+* Continuation de l'écriture de la fonction principale de traitement de données (arm_data_processing_shift)
+* Identification de la correspondance entre les fonctions ARM à simuler et les fonctions C à écrire
+* Écriture de la fonction MSR (arm_data_processing_immediate_msr)
+* Début d'écriture des fonctions de load/store (dans arm_load_store)
+* Mise à jour des fichiers du simulateur en version 1.3

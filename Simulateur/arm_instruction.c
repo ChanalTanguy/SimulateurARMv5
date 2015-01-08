@@ -29,13 +29,13 @@ Contact: Guillaume.Huard@imag.fr
 #include "util.h"
 
 static int arm_execute_instruction(arm_core p) {
-	uint32_t instr;
+    	uint32_t instr;
 	uint32_t adr_pc;
 	adr_pc = arm_read_register(p, 15); // On récupère l'adresse contenue dans le PC (15 = Registre correspondant au PC)
 	if (arm_read_word(p, adr_pc, &instr) != 0){ // On lit l'instruction contenue à l'adresse récupérée
 		return -1;
 	}
-	arm_write_register(p, 15, adr_pc+4); // On incrémente l'adresse contenue dans le PC de 4
+	arm_write_register(p, 15, adr_pc+2); // On incrémente l'adresse contenue dans le PC de 4
 
 	uint8_t cond;
 
@@ -49,7 +49,7 @@ static int arm_execute_instruction(arm_core p) {
 	int v = get_bit(flags, 28);
 
 	cond = get_bits(instr, 31, 28); // Récupération du code condition de l'instruction
-	int res;
+	int res = 0;
 	
 	switch (cond) {
 		case 0 : res = (z == 1); break;
@@ -71,8 +71,61 @@ static int arm_execute_instruction(arm_core p) {
 		default : return -1;
 	}
 
+	uint8_t champ = get_bits(instr, 27, 25);
+
 	if (res) {
-		// Exécuter l'instruction
+		switch (champ) {
+			case 0 : 
+				if (get_bits(instr,24,23) == 2) {
+					//Miscallenous instructions
+					arm_data_processing_immediate_msr(p, instr);
+				} else {
+					if (get_bit(instr, 4) == 0) {
+						// Data processing immediate shift
+					} else if (get_bit(instr, 7) == 0) {
+						// Data processing resgister shift
+					} else if (get_bit(instr, 7) == 1) {
+						// Multiplies / Extra load/stores
+					} else {
+						return -1;
+					}
+				}
+			case 1 :
+				if (get_bits(instr,24,23) == 2) {
+					if (get_bits(instr,21,20) == 0) {
+						// Undefined instruction
+					} else if (get_bits(instr,21,20) == 2) {
+						// Move immediate to status register
+						arm_data_processing_immediate_msr(p, instr);
+					} else {
+						return -1;
+					}
+				} else {
+					// Data processing immediate			
+				}
+			case 2 : // Load/store immediate offset
+			case 3 : if (get_bit(instr,4) == 0) {
+						// Load/store register offset
+					} else if ((get_bits(instr,24,20) == 31) && (get_bits(instr,7,4) == 15)) {
+						// Architecturally undefined
+					} else {
+						// Media instructions
+					}
+			case 4 : // Load/store multiple
+			case 5 : // Branch and branch with link
+			case 6 : // Coprocessor load/store and double register transfer
+			case 7 : if (get_bit(instr, 24) == 1) {
+						// Software interrupt
+						arm_coprocessor_others_swi(p, instr);
+					} else {
+						if (get_bit(instr,4) == 0) {
+							// Coprocessor data processing
+						} else { 
+							// Coprocessor register transfers
+						}
+					}
+			default : return -1;
+		}
 	}
 	
 	return 0;

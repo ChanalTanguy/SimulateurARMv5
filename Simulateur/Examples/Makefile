@@ -86,7 +86,11 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/config.h.in $(top_srcdir)/../build-aux/depcomp \
 	../build-aux/compile ../build-aux/depcomp \
 	../build-aux/install-sh ../build-aux/missing \
+<<<<<<< HEAD
 	../build-aux/ylwrap $(top_srcdir)/../build-aux/compile \
+=======
+	$(top_srcdir)/../build-aux/compile \
+>>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 	$(top_srcdir)/../build-aux/install-sh \
 	$(top_srcdir)/../build-aux/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -197,12 +201,21 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
+<<<<<<< HEAD
 ACLOCAL = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing autoconf
 AUTOHEADER = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing autoheader
 AUTOMAKE = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing automake-1.14
+=======
+ACLOCAL = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing aclocal-1.14
+AMTAR = $${TAR-tar}
+AM_DEFAULT_VERBOSITY = 1
+AUTOCONF = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing autoconf
+AUTOHEADER = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing autoheader
+AUTOMAKE = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing automake-1.14
+>>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 AWK = gawk
 CC = arm-elf-gcc
 CCAS = arm-elf-gcc
@@ -227,7 +240,11 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
+<<<<<<< HEAD
 MAKEINFO = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing makeinfo
+=======
+MAKEINFO = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing makeinfo
+>>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = arm-examples
@@ -242,10 +259,17 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 1.0
+<<<<<<< HEAD
 abs_builddir = /home/g/ginetm/Projet_PROG5/Simulateur/Examples
 abs_srcdir = /home/g/ginetm/Projet_PROG5/Simulateur/Examples
 abs_top_builddir = /home/g/ginetm/Projet_PROG5/Simulateur/Examples
 abs_top_srcdir = /home/g/ginetm/Projet_PROG5/Simulateur/Examples
+=======
+abs_builddir = /home/c/chanalt/Projet/ProjetARM/Simulateur/Examples
+abs_srcdir = /home/c/chanalt/Projet/ProjetARM/Simulateur/Examples
+abs_top_builddir = /home/c/chanalt/Projet/ProjetARM/Simulateur/Examples
+abs_top_srcdir = /home/c/chanalt/Projet/ProjetARM/Simulateur/Examples
+>>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 ac_ct_CC = 
 am__include = include
 am__leading_dot = .
@@ -264,7 +288,11 @@ host_alias = arm-elf
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
+<<<<<<< HEAD
 install_sh = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/install-sh
+=======
+install_sh = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/install-sh
+>>>>>>> 4d529025314e4e4cd2cffbc4be9d787389255f05
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
