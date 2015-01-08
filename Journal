@@ -16,3 +16,5 @@ Jeudi 08/01
 * Continuation de l'écriture de la fonction principale de traitement de données (arm_data_processing_shift)
 * Identification de la correspondance entre les fonctions ARM à simuler et les fonctions C à écrire
 * Écriture de la fonction MSR (arm_data_processing_immediate_msr)
+* Début d'écriture des fonctions de load/store (dans arm_load_store)
+* Mise à jour des fichiers du simulateur en version 1.3
