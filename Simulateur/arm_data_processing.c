@@ -278,3 +278,18 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 	}
 	return 0;
 }
+
+int CarryFrom(uint32_t op1, uint32_t op2) {
+	int c = 0;
+	int i;
+	for (i = 0 ; i < 32 ; i++) {
+		c = (c + get_bit(op1, i) + get_bit(op2, i)) >> 1;
+	}
+	return c;
+}
+
+int OverflowFrom(uint32_t op1, uint32_t op2) {
+	int v = 0;
+	v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) == get_bit(op1+op2, 31));
+	return v;
+}
