@@ -452,7 +452,7 @@ int CarryFrom(uint32_t op1, uint32_t op2, char operation) {
 int BorrowFrom(uint32_t op1, uint32_t op2, char operation) {
 	uint32_t flags = arm_read_cpsr(p);
 	int c = 0;
-	if (operation = "ADC") {
+	if (operation = "SBC") {
 		c = get_bit(flags, 29);
 	}
 	int i;
