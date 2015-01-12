@@ -173,7 +173,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 
 	switch(opcode){
 		case(0): //AND
-			result = (arm_read_register(p, Rn)) & shifter_operand; 
+			result = arm_read_register(p, Rn) & shifter_operand; 
 			arm_write_register(p, Rd, result);  //Rd = Rn AND shifter_operand
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
 				if(arm_current_mode_has_spsr(p)){
@@ -189,15 +189,132 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
 				}else
 					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+				if(shifter_carryout){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),C));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),C));
 			}
 			break;
 		
-		//case(1):
-		//case(2):
-		//case(3):
+		case(1): //EOR
+			result = arm_read_register(p, Rn) ^ shifter_operand;
+			arm_write_register(p, Rd, result);
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
+				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+				if(shifter_carryout){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),C));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),C));
+			}
+			break;
+			 		
+		case(2): //SUB
+			result = arm_read_register(p, Rn) - shifter_operand;
+			arm_write_register(p, Rd, result);
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
+				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+				if(BorrowFrom(arm_read_register(p, Rn),shifter_operand)){ //Borrow is on
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),C));
+				}else 
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),C));
+
+				if(OverflowFrom(arm_read_register(p, Rn),shifter_operand,"SUB")){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+			}
+			break;
+			
+		case(3): //RSB
+
+			result = shifter_operand - arm_read_register(p, Rn);
+			arm_write_register(p, Rd, result);
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
+				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+				if(BorrowFrom(shifter_operand,arm_read_register(p, Rn))){ //Borrow is on
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),C));
+				}else 
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),C));
+
+				if(OverflowFrom(shifter_operand,arm_read_register(p, Rn),"SUB")){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+			}
+			break;
 		
 		case(4): //ADD
-			result = (arm_read_register(p,Rn)) + shifter_operand;
+			result = arm_read_register(p,Rn) + shifter_operand;
+			arm_write_register(p, Rd, result); //Rd = Rn + shifter_operand
+
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
+				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+				if(CarryFrom(arm_read_register(p, Rn),shifter_operand)){ //Carry is on
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),C));
+				}else 
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),C));
+
+				if(OverflowFrom(arm_read_register(p, Rn),shifter_operand,"ADD")){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+			break;
+
+		case(5): //ADC
+			result = arm_read_register(p,Rn) + shifter_operand + get_bit(arm_read_cpsr(p),C);
 			arm_write_register(p, Rd, result); //Rd = Rn + shifter_operand
 
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){
@@ -215,7 +332,47 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 				}else
 					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
 			break;
+
+		case(6): //SBC
+			result = arm_read_register(p,Rn) - shifter_operand - ~get_bit(arm_read_cpsr(p),C);
+			arm_write_register(p, Rd, result); //Rd = Rn + shifter_operand
+
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
 				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+			break;
+
+		case(7): //RSC
+			result = shifter_operand - arm_read_register(p, Rn) - ~get_bit(arm_read_cpsr(p),C);
+			arm_write_register(p, Rd, result);
+			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
+				if(arm_current_mode_has_spsr(p)){
+					arm_write_cpsr(p, arm_read_spsr(p));    //CPSR = SPSR
+				}
+			}else if(S){
+				if(get_bit(arm_read_register(p, Rd),31)){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),N));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),N));
+				
+				if(!(arm_read_register(p, Rd))){
+					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),Z));
+				}else
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),Z));
+				
+			}
+			break;		
 	  
 	}
 		
@@ -297,8 +454,15 @@ int BorrowFrom(uint32_t op1, uint32_t op2) {
 	return c;
 }
 
-int OverflowFrom(uint32_t op1, uint32_t op2) {
+int OverflowFrom(uint32_t op1, uint32_t op2, char operation) {
 	int v = 0;
-	v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) != get_bit(op1+op2, 31));
+	switch(operation){
+		case "ADD" :
+			v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) != get_bit(op1+op2, 31));
+			break;
+		case "SUB" :
+			v = (get_bit(op1, 31) != get_bit(op2, 31)) && (get_bit(op2, 31) == get_bit(op1-op2, 31));
+			break;
+	}
 	return v;
 }
