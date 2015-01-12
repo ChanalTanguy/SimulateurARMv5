@@ -50,6 +50,15 @@ int arm_load_store(arm_core p, uint32_t ins) {
 	  masque = get_bit(ins,22);
 	  if (masque == 0)
 	    {//str
+	      if (get_bit(ins,25)==0)
+		// str immediat offset
+		{
+		  if  (get_bit(ins,25)==0)
+		    
+		}
+	      else
+
+	      
 	    }
 	  else
 	    {//strb
