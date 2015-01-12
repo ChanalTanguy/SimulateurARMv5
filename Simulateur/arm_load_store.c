@@ -27,6 +27,49 @@ Contact: Guillaume.Huard@imag.fr
 #include "debug.h"
 
 int arm_load_store(arm_core p, uint32_t ins) {
+  uint8_t masque = 0;
+  masque = get_bits(ins,27,26);
+  if (masque == 0)
+    { //ldrH et strH
+      masque = get_bit(ins,20);
+      if (masque == 0)
+	{ //strH
+	
+	}
+
+      else
+	{ // ldrH
+	  
+	}
+    }
+  else
+    { // ldr, ldrb, str, strb
+       masque = get_bit(ins,20);
+       if (masque == 0)
+	{ //str et strb 
+	  masque = get_bit(ins,22);
+	  if (masque == 0)
+	    {//str
+	    }
+	  else
+	    {//strb
+	      
+	    }
+	}
+
+      else
+	{ // ldr et ldrb
+	   masque = get_bit(ins,22);
+	  if (masque == 0)
+	    {//ldr
+	    }
+	  else
+	    {//ldrb
+	      
+	    }
+	}
+    }
+
     return UNDEFINED_INSTRUCTION;
 }
 
