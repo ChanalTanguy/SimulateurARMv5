@@ -288,8 +288,17 @@ int CarryFrom(uint32_t op1, uint32_t op2) {
 	return c;
 }
 
+int BorrowFrom(uint32_t op1, uint32_t op2) {
+	int c = 0;
+	int i;
+	for (i = 0 ; i < 32 ; i++) {
+		c = (get_bit(op1, i) < (get_bit(op2, i) + c));
+	}
+	return c;
+}
+
 int OverflowFrom(uint32_t op1, uint32_t op2) {
 	int v = 0;
-	v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) == get_bit(op1+op2, 31));
+	v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) != get_bit(op1+op2, 31));
 	return v;
 }
