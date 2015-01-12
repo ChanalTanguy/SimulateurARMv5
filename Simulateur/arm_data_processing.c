@@ -436,8 +436,12 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 	return 0;
 }
 
-int CarryFrom(uint32_t op1, uint32_t op2) {
+int CarryFrom(uint32_t op1, uint32_t op2, char operation) {
+	uint32_t flags = arm_read_cpsr(p);
 	int c = 0;
+	if (operation = "ADC") {
+		c = get_bit(flags, 29);
+	}
 	int i;
 	for (i = 0 ; i < 32 ; i++) {
 		c = (c + get_bit(op1, i) + get_bit(op2, i)) >> 1;
@@ -445,8 +449,12 @@ int CarryFrom(uint32_t op1, uint32_t op2) {
 	return c;
 }
 
-int BorrowFrom(uint32_t op1, uint32_t op2) {
+int BorrowFrom(uint32_t op1, uint32_t op2, char operation) {
+	uint32_t flags = arm_read_cpsr(p);
 	int c = 0;
+	if (operation = "ADC") {
+		c = get_bit(flags, 29);
+	}
 	int i;
 	for (i = 0 ; i < 32 ; i++) {
 		c = (get_bit(op1, i) < (get_bit(op2, i) + c));
@@ -455,6 +463,8 @@ int BorrowFrom(uint32_t op1, uint32_t op2) {
 }
 
 int OverflowFrom(uint32_t op1, uint32_t op2, char operation) {
+	uint32_t flags = arm_read_cpsr(p);
+	int c = get_bit(flags, 29);
 	int v = 0;
 	switch(operation){
 		case "ADD" :
@@ -462,6 +472,12 @@ int OverflowFrom(uint32_t op1, uint32_t op2, char operation) {
 			break;
 		case "SUB" :
 			v = (get_bit(op1, 31) != get_bit(op2, 31)) && (get_bit(op2, 31) == get_bit(op1-op2, 31));
+			break;
+		case "ADC" :
+			v = (get_bit(op1, 31) == get_bit(op2, 31)) && (get_bit(op1, 31) != get_bit(op1+op2+c, 31));
+			break;
+		case "SBC" :
+			v = (get_bit(op1, 31) != get_bit(op2, 31)) && (get_bit(op2, 31) == get_bit(op1-(op2+c), 31));
 			break;
 	}
 	return v;
