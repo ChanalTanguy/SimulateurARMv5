@@ -28,15 +28,23 @@ Contact: Guillaume.Huard@imag.fr
 
 int arm_load_store(arm_core p, uint32_t ins) {
   uint8_t masque = 0;
+  uint8_t rn;
+  uint8_t rd;
+  uint8_t rm;
+  uint32_t addresse;
+  uint32_t value;
+  uint32_t offset=0;
+
+  rn = gets_bits(ins,19,16);
+  rd = gets_bits(ins,15,12);
   masque = get_bits(ins,27,26);
   if (masque == 0)
     { //ldrH et strH
-      masque = get_bit(ins,20);
-      if (masque == 0)
+      if (get_bit(ins,20) == 0)
 	{ //strH
-	
+	  
 	}
-
+      
       else
 	{ // ldrH
 	  
@@ -44,49 +52,126 @@ int arm_load_store(arm_core p, uint32_t ins) {
     }
   else
     { // ldr, ldrb, str, strb
-       masque = get_bit(ins,20);
-       if (masque == 0)
+      if (get_bit(ins,20) == 0)//L
 	{ //str et strb 
-	  masque = get_bit(ins,22);
-	  if (masque == 0)
+	  if (get_bit(ins,22) == 0) //B
 	    {//str
-	      if (get_bit(ins,25)==0)
-		// str immediat offset
+	      if  (get_bit(ins,24)==0)// P
+		{//str post indexed adressing
+		  if (get_bit(ins,21)==0)//W
+		    {// str normal memory acces(
+		      adresse = arm_read_register( p,rn);
+		      value = arm_read_register(p,rd);
+		      offset = gets_bits(ins,11,0);
+		      arm_write_word( p,address,value);
+		      if ( get_bit(ins,23)==0)//U
+			{ adresse =adresse-offset;}
+		      else 
+			{adresse =adresse+offset;}
+		      arm_write_register(p,rn,adresse);
+		    }
+		  else 
+		    {return UNDEFINED_INSTRUCTION; }
+		}
+	      else//p==1
 		{
-		  if  (get_bit(ins,25)==0)
-		    
+		  if ( get_bit(ins,21)==0)//W
+		    {//offset adressing
+		      rm = gets_bits(ins,3,0);
+		      adresse = arm_read_register( p,rn);
+		      value = arm_read_register(p,rd);
+		      offset = arm_read_register( p,rm);
+		      if ( get_bit(ins,23)==0)//U
+			{ adresse =adresse-offset;}
+		      else 
+			{adresse =adresse+offset;}
+		      arm_write_word( p,address,value);
+		    }
+		  else
+		    {// W= 1 et P=1 pre index addressing
+		      rm = gets_bits(ins,3,0);
+		      adresse = arm_read_register( p,rn);
+		      value = arm_read_register(p,rd);
+		      offset = arm_read_register( p,rm);
+		      if ( get_bit(ins,23)==0)//U
+			{ adresse =adresse-offset;}
+		      else 
+			{adresse =adresse+offset;}
+		      rn = arm_write_register(p,adresse);
+		      arm_write_word( p,address,value);
+		    }
 		}
 	      else
-
-	      
-	    }
-	  else
-	    {//strb
-	      
+		{//strb
+		  if  (get_bit(ins,24)==0)// P
+		    {//str post indexed adressing
+		      if (get_bit(ins,21)==0)//W
+			{// str normal memory acces(
+			  adresse = arm_read_register( p,rn);
+			  value = arm_read_register(p,rd);
+			  offset = gets_bits(ins,11,0);
+			  arm_write_bytes( p,address,value);
+			  if ( get_bit(ins,23)==0)//U
+			    { adresse =adresse-offset;}
+			  else 
+			    {adresse =adresse+offset;}
+			  arm_write_register(p,rn,adresse);
+			}
+		      else 
+			{return UNDEFINED_INSTRUCTION; }
+		    }
+		  else//p==1
+		    {
+		      if ( get_bit(ins,21)==0)//W
+			{//offset adressing
+			  rm = gets_bits(ins,3,0);
+			  adresse = arm_read_register( p,rn);
+			  value = arm_read_register(p,rd);
+			  offset = arm_read_register( p,rm);
+			  if ( get_bit(ins,23)==0)//U
+			    { adresse =adresse-offset;}
+			  else 
+			    {adresse =adresse+offset;}
+			  arm_write_byte( p,address,value);
+			}
+		      else
+			{// W= 1 et P=1 pre index addressing
+			  rm = gets_bits(ins,3,0);
+			  adresse = arm_read_register( p,rn);
+			  value = arm_read_register(p,rd);
+			  offset = arm_read_register( p,rm);
+			  if ( get_bit(ins,23)==0)//U
+			    { adresse =adresse-offset;}
+			  else 
+			    {adresse =adresse+offset;}
+			  rn = arm_write_register(p,adresse);
+			  arm_write_byte( p,address,value);
+			}
+		    }
+		}
 	    }
 	}
-
       else
 	{ // ldr et ldrb
-	   masque = get_bit(ins,22);
+	  masque = get_bit(ins,22);
 	  if (masque == 0)
 	    {//ldr
 	    }
 	  else
 	    {//ldrb
-	      
+		  
 	    }
 	}
     }
-
-    return UNDEFINED_INSTRUCTION;
+  
+  return UNDEFINED_INSTRUCTION;
 }
 
 int arm_load_store_multiple(arm_core p, uint32_t ins) {
-    return UNDEFINED_INSTRUCTION;
+  return UNDEFINED_INSTRUCTION;
 }
-
+  
 int arm_coprocessor_load_store(arm_core p, uint32_t ins) {
-    /* Not implemented */
-    return UNDEFINED_INSTRUCTION;
+  /* Not implemented */
+  return UNDEFINED_INSTRUCTION;
 }
