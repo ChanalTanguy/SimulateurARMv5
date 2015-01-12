@@ -113,6 +113,7 @@ static int arm_execute_instruction(arm_core p) {
 					}
 			case 4 : // Load/store multiple
 			case 5 : // Branch and branch with link
+				 arm_branch(p, instr);
 			case 6 : // Coprocessor load/store and double register transfer
 			case 7 : if (get_bit(instr, 24) == 1) {
 						// Software interrupt

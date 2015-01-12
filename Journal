@@ -18,3 +18,8 @@ Jeudi 08/01
 * Écriture de la fonction MSR (arm_data_processing_immediate_msr)
 * Début d'écriture de la première fonction de load/store (arm_load_store)
 * Mise à jour des fichiers du simulateur en version 1.3
+
+Vendredi 09/01
+* Continuation de l'écriture de la fonction principale de traitement de données (arm_data_processing_shift)
+* Écriture et test des fonctions de mise à jour des flags C et V (CarryFrom et OverflowFrom)
+* Écriture de la fonction de branchement (arm_branch)
