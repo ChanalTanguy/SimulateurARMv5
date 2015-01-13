@@ -312,6 +312,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
 				}else
 					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+				}
 			break;
 
 		case(5): //ADC
@@ -341,7 +342,8 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 				if((get_bit(arm_read_register(p,Rn),31) == get_bit(shifter_operand,31)) && (get_bit(arm_read_register(p,Rn),31) != get_bit(arm_read_register(p,Rn)+shifter_operand+get_bit(arm_read_cpsr(p),C), 31))){
 					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
 				}else
-					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));	
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+			}	
 				
 			break;
 
@@ -372,7 +374,8 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 				if((get_bit(arm_read_register(p,Rn),31) != get_bit(shifter_operand,31)) && (get_bit(shifter_operand,31) == get_bit(arm_read_register(p,Rn)-(shifter_operand + ~get_bit(arm_read_cpsr(p),C)), 31))){
 					arm_write_cpsr(p, set_bit(arm_read_cpsr(p),V));
 				}else
-					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));					
+					arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
+			}					
 			break;
 
 		case(7): //RSC
@@ -564,9 +567,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 			break;
 
 	}
-		
-		
-	return UNDEFINED_INSTRUCTION;
+		return UNDEFINED_INSTRUCTION;
 }
 
 int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
