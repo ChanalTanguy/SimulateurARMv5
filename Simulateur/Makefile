@@ -244,53 +244,12 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-<<<<<<< HEAD
-<<<<<<< HEAD
 ACLOCAL = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoconf
 AUTOHEADER = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoheader
 AUTOMAKE = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing automake-1.14
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-ACLOCAL = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing aclocal-1.14
-AMTAR = $${TAR-tar}
-AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing automake-1.14
-=======
-=======
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
-ACLOCAL = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing aclocal-1.14
-AMTAR = $${TAR-tar}
-AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing automake-1.14
-<<<<<<< HEAD
->>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
-=======
-ACLOCAL = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing aclocal-1.14
-AMTAR = $${TAR-tar}
-AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing automake-1.14
-=======
-ACLOCAL = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing aclocal-1.14
-AMTAR = $${TAR-tar}
-AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing automake-1.14
->>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
->>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
->>>>>>> 88e6f7883c920997a55d74983e3d8ef5ccc85ecd
-=======
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
 AWK = gawk
 CC = gcc
 CCAS = gcc
@@ -322,26 +281,7 @@ LEX_OUTPUT_ROOT = lex.yy
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-<<<<<<< HEAD
-<<<<<<< HEAD
 MAKEINFO = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing makeinfo
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-MAKEINFO = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing makeinfo
-=======
-MAKEINFO = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing makeinfo
->>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
-=======
-MAKEINFO = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing makeinfo
-=======
-MAKEINFO = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing makeinfo
->>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
->>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
->>>>>>> 88e6f7883c920997a55d74983e3d8ef5ccc85ecd
-=======
-MAKEINFO = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing makeinfo
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = arm_simulator
@@ -356,37 +296,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 VERSION = 1.3
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 88e6f7883c920997a55d74983e3d8ef5ccc85ecd
-=======
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
 abs_builddir = /home/c/chanalt/Projet/arm_simulator-1.3
 abs_srcdir = /home/c/chanalt/Projet/arm_simulator-1.3
 abs_top_builddir = /home/c/chanalt/Projet/arm_simulator-1.3
 abs_top_srcdir = /home/c/chanalt/Projet/arm_simulator-1.3
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
-=======
-<<<<<<< HEAD
-abs_builddir = /home/g/ginetm/Projet_PROG5/Simulateur
-abs_srcdir = /home/g/ginetm/Projet_PROG5/Simulateur
-abs_top_builddir = /home/g/ginetm/Projet_PROG5/Simulateur
-abs_top_srcdir = /home/g/ginetm/Projet_PROG5/Simulateur
-=======
-abs_builddir = /home/c/chanalt/Projet/ProjetARM/Simulateur
-abs_srcdir = /home/c/chanalt/Projet/ProjetARM/Simulateur
-abs_top_builddir = /home/c/chanalt/Projet/ProjetARM/Simulateur
-abs_top_srcdir = /home/c/chanalt/Projet/ProjetARM/Simulateur
->>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
->>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
->>>>>>> 88e6f7883c920997a55d74983e3d8ef5ccc85ecd
-=======
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -405,26 +318,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-<<<<<<< HEAD
-<<<<<<< HEAD
 install_sh = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/install-sh
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-install_sh = ${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/install-sh
-=======
-install_sh = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/install-sh
->>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
-=======
-install_sh = ${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/install-sh
-=======
-install_sh = ${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/install-sh
->>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
->>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
->>>>>>> 88e6f7883c920997a55d74983e3d8ef5ccc85ecd
-=======
-install_sh = ${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/install-sh
->>>>>>> 71e099f4e5732abd45b0bb6cff6b89b19679e588
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
