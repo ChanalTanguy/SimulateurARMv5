@@ -27,8 +27,7 @@ Contact: Guillaume.Huard@imag.fr
 
 int arm_data_processing_shift(arm_core p, uint32_t ins);
 int arm_data_processing_immediate_msr(arm_core p, uint32_t ins);
-int CarryFrom(uint32_t op1, uint32_t op2, char operation);
-int BorrowFrom(uint32_t op1, uint32_t op2, char operation);
-int OverflowFrom(uint32_t op1, uint32_t op2, char operation);
+int CarryFrom(uint32_t op1, uint32_t op2, int c);
+int BorrowFrom(uint32_t op1, uint32_t op2, int c);
 
 #endif

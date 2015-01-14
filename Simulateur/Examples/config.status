@@ -438,10 +438,17 @@ This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+ac_pwd='/home/h/hourya/Projet_Prog5/Simulateur/Examples'
+=======
+ac_pwd='/home/c/chanalt/Projet/arm_simulator-1.3/Examples'
+>>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
+=======
 ac_pwd='/home/g/ginetm/Projet_PROG5/Simulateur/Examples'
 =======
 ac_pwd='/home/c/chanalt/Projet/ProjetARM/Simulateur/Examples'
 >>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
+>>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -661,6 +668,22 @@ S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
 <<<<<<< HEAD
+<<<<<<< HEAD
+S["install_sh"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/install-sh"
+S["MAKEINFO"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing automake-1.14"
+S["AUTOCONF"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/h/hourya/Projet_Prog5/Simulateur/build-aux/missing aclocal-1.14"
+=======
+S["install_sh"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/install-sh"
+S["MAKEINFO"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing automake-1.14"
+S["AUTOCONF"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/c/chanalt/Projet/arm_simulator-1.3/build-aux/missing aclocal-1.14"
+>>>>>>> ce62985da6ff1525e91fb3864019d41f3c146298
+=======
 S["install_sh"]="${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/install-sh"
 S["MAKEINFO"]="${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing makeinfo"
 S["AUTOHEADER"]="${SHELL} /home/g/ginetm/Projet_PROG5/Simulateur/build-aux/missing autoheader"
@@ -675,6 +698,7 @@ S["AUTOMAKE"]="${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/mi
 S["AUTOCONF"]="${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing autoconf"
 S["ACLOCAL"]="${SHELL} /home/c/chanalt/Projet/ProjetARM/Simulateur/build-aux/missing aclocal-1.14"
 >>>>>>> 1f9f0abbca1ca43d1a619d7d4a127605de4b992f
+>>>>>>> da84957b99444e687a7d4a9fd642acb6fda706d7
 S["VERSION"]="1.0"
 S["PACKAGE"]="arm-examples"
 S["CYGPATH_W"]="echo"
