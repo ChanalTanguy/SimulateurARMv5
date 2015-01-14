@@ -31,16 +31,17 @@ int arm_branch(arm_core p, uint32_t ins) {
 	// Voir page 113
 
 	// B, BL (p 160-161)
-	uint32_t adr_pc;
-	uint32_t adr_branch;
-	adr_pc = arm_read_register(p, 15); // 15 = Registre correspondant au PC
-	if (get_bit(ins, 24)) {
-		arm_write_register(p, 14, adr_pc-2); // 14 = Registre correspondant au LR
+	int adr_pc = arm_read_register(p, 15); // 15 = Registre correspondant au PC
+	printf("%x\n",ins);
+	if (get_bit(ins, 24) == 1) {
+		arm_write_register(p, 14, adr_pc-4); // 14 = Registre correspondant au LR
 	// Le PC ayant deux instructions d'avance, "adr_pc-2" permet de récupérer l'instruction suivant l'instruction courante 
 	}
-	adr_branch = get_bits(ins, 23,0);
-	arm_write_register(p, 15, adr_pc + (adr_branch << 2));
+	int bra_offset = asr(ins << 8,8) *4;
+	int new_pc = adr_pc + bra_offset;
+	arm_write_register(p, 15, (uint32_t) new_pc);
 	return 0;
+
 }
 
 int arm_coprocessor_others_swi(arm_core p, uint32_t ins) {

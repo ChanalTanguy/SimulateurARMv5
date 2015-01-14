@@ -30,13 +30,7 @@ Contact: Guillaume.Huard@imag.fr
 
 static int arm_execute_instruction(arm_core p) {
     	uint32_t instr;
-	uint32_t adr_pc;
-	adr_pc = arm_read_register(p, 15); // On récupère l'adresse contenue dans le PC (15 = Registre correspondant au PC)
-	if (arm_read_word(p, adr_pc, &instr) != 0){ // On lit l'instruction contenue à l'adresse récupérée
-		return -1;
-	}
-	arm_write_register(p, 15, adr_pc+2); // On incrémente l'adresse contenue dans le PC de 4
-
+	if (arm_fetch(p, &instr) == -1) return -1;
 	uint8_t cond;
 
 	uint32_t flags = arm_read_cpsr(p); // Récupération du CPSR 
@@ -78,18 +72,21 @@ static int arm_execute_instruction(arm_core p) {
 			case 0 : 
 				if (get_bits(instr,24,23) == 2) {
 					//Miscallenous instructions
-					arm_data_processing_immediate_msr(p, instr);
+					arm_miscellaneous(p, instr);
 				} else {
 					if (get_bit(instr, 4) == 0) {
 						// Data processing immediate shift
+						arm_data_processing_shift(p, instr);
 					} else if (get_bit(instr, 7) == 0) {
-						// Data processing resgister shift
+						// Data processing register shift
+						arm_data_processing_shift(p, instr);
 					} else if (get_bit(instr, 7) == 1) {
 						// Multiplies / Extra load/stores
 					} else {
 						return -1;
 					}
 				}
+				break;
 			case 1 :
 				if (get_bits(instr,24,23) == 2) {
 					if (get_bits(instr,21,20) == 0) {
@@ -103,7 +100,9 @@ static int arm_execute_instruction(arm_core p) {
 				} else {
 					// Data processing immediate			
 				}
+				break;
 			case 2 : // Load/store immediate offset
+				break;
 			case 3 : if (get_bit(instr,4) == 0) {
 						// Load/store register offset
 					} else if ((get_bits(instr,24,20) == 31) && (get_bits(instr,7,4) == 15)) {
@@ -111,10 +110,13 @@ static int arm_execute_instruction(arm_core p) {
 					} else {
 						// Media instructions
 					}
+				break;
 			case 4 : // Load/store multiple
+				break;
 			case 5 : // Branch and branch with link
-				 arm_branch(p, instr);
+				 arm_branch(p, instr); break;
 			case 6 : // Coprocessor load/store and double register transfer
+				break;
 			case 7 : if (get_bit(instr, 24) == 1) {
 						// Software interrupt
 						arm_coprocessor_others_swi(p, instr);
@@ -125,7 +127,8 @@ static int arm_execute_instruction(arm_core p) {
 							// Coprocessor register transfers
 						}
 					}
-			default : return -1;
+				break;
+			default : return -1; break;
 		}
 	}
 	
