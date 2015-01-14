@@ -3,3 +3,4 @@
 # Ignore temporary files
 *.c~
 *.h~
+*.*~
