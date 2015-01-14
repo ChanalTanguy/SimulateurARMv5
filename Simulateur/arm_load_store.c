@@ -31,7 +31,8 @@ int arm_load_store(arm_core p, uint32_t ins) {
 	uint8_t rn;
 	uint8_t rd;
 	uint8_t rm;
-	uint8_t shit;
+	uint8_t shift;
+	uint8_t shift_imm;
 	uint32_t addresse;
 	uint32_t value;
 	uint32_t offset=0;
@@ -44,6 +45,13 @@ int arm_load_store(arm_core p, uint32_t ins) {
 
 if (get_bits(ins,27,26) == 0)
 	{ //ldrH et strH
+		if (get_bit(ins,25)==0)// I
+		{offset = (get_bits(ins,11,8))| (get_bit_bits(ins,3,0);}
+	else 
+		{ 
+		rm=get_bits(ins,3,0);
+		offset = arm_read_register(p,rm);
+		}
 	}
 else
 	{ // ldr, ldrb, str, strb
@@ -54,9 +62,36 @@ else
 		rm = gets_bits(ins,3,0);
 		offset = arm_read_register( p,rm);
 			if ( get_bit(ins,11,4)!=0 )
-			{ shit =get_bit(ins,6,5);
+			{ 
+			shift =get_bit(ins,6,5);
+			shift_imm = get_bit(ins,11,7);
+
+			switch (shift){
+				case 0 : //lsl
+					offset = offset << shift_imm;
+					break; 
+				case 1 :// lsr
+					if (shift_imm == 0)
+						offset=0;
+					else 
+						offset = offset >> shift_imm;
+					break;
+				
+				case 2 : // ASR
+					if (shift_imm == 0)
+						asr(offset,32);	
+					else 
+						{offset = offset >> shift_imm;}
+				break;
+				
+				case 3 : if (shift_imm == 0)
+						{offset=(arm_read_cpsr(p)<<31)|(offset >> 1 }
+						else
+						{offset=ror(offset,shift_imm)}
+				break;
+				
+				case default : break;
 			}
-			
 		}
 	if (get_bit(ins,24)==0)// P
 		{//P=0 post indexed adressing
