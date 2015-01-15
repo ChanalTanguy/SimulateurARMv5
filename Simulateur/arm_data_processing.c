@@ -468,7 +468,10 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 				arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
 			break;
 
-		case(11): //ORR
+		case(11) : //CMN
+			break;
+
+		case(12): //ORR
 			result = arm_read_register(p, Rn) | shifter_operand;
 			arm_write_register(p, Rd, result);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
@@ -493,7 +496,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 			}
 			break;
 
-		case(12): //MOV
+		case(13): //MOV
 			arm_write_register(p, Rd, shifter_operand);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
 				if(arm_current_mode_has_spsr(p)){
@@ -517,7 +520,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 			}
 			break;
 			
-		case(13): //BIC
+		case(14): //BIC
 			result = arm_read_register(p, Rn) & ~(shifter_operand);
 			arm_write_register(p, Rd, result);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
@@ -542,7 +545,7 @@ int arm_data_processing_shift(arm_core p, uint32_t ins) {
 			}
 			break;
 
-		case(14): //MVN
+		case(15): //MVN
 			arm_write_register(p, Rd, ~(shifter_operand));
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
 				if(arm_current_mode_has_spsr(p)){
@@ -581,7 +584,6 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 	uint32_t shifter_operand;
 	uint8_t S = get_bit(ins,20);
 	uint32_t alu_out;
-	printf("opcode = %d\n",opcode);
 
 	shifter_operand = ror(immed_8,rotate_imm * 2);
 	if (rotate_imm == 0) {
@@ -885,7 +887,10 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 				arm_write_cpsr(p, clr_bit(arm_read_cpsr(p),V));
 			break;
 
-		case(11): //ORR
+		case(11) : //CMN
+			break;
+
+		case(12): //ORR
 			result = arm_read_register(p, Rn) | shifter_operand;
 			arm_write_register(p, Rd, result);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
@@ -910,8 +915,7 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 			}
 			break;
 
-		case(12): //MOV
-			printf("MOV, Rd = %d, shifter_operand =%d\n",Rd,shifter_operand);
+		case(13): //MOV
 			arm_write_register(p, Rd, shifter_operand);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
 				if(arm_current_mode_has_spsr(p)){
@@ -935,7 +939,7 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 			}
 			break;
 			
-		case(13): //BIC
+		case(14): //BIC
 			result = arm_read_register(p, Rn) & ~(shifter_operand);
 			arm_write_register(p, Rd, result);
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
@@ -960,7 +964,7 @@ int arm_data_processing_immediate_msr(arm_core p, uint32_t ins) {
 			}
 			break;
 
-		case(14): //MVN
+		case(15): //MVN
 			arm_write_register(p, Rd, ~(shifter_operand));
 			if (S && (arm_read_register(p, Rd) == arm_read_register(p, 15))){ //if S == 1 and Rd == R15
 				if(arm_current_mode_has_spsr(p)){

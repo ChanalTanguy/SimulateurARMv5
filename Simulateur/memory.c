@@ -24,10 +24,8 @@ Contact: Guillaume.Huard@imag.fr
 #include "memory.h"
 #include "util.h"
 
-#define masque_8 128
-
 struct memory_data {
-    int8_t *address;
+    uint8_t *address;
     size_t size;
 };
 
@@ -58,108 +56,105 @@ void memory_destroy(memory mem) {
 }
 
 int memory_read_byte(memory mem, uint32_t address, uint8_t *value) {
-    if (address > (mem->size)-1){
-		return -1;
-	}
-	*value = *(mem->address + address);
-	return 0;
+    
+    if (address > mem->size)
+	return -1;
+    uint8_t * ad;
+    ad = mem->address + address;
+    *value = *ad;
+    return 0;
 }
 
 int memory_read_half(memory mem, int be, uint32_t address, uint16_t *value) {
-    if (address > (mem->size)-2){
-		return -1;
-	}
-	*value = *(mem->address + address + 1)<<8;
-	*value += *(mem->address + address);
-	if (be == 1)  {
-		*value = reverse_2(*value);
-	} else if (be != 0) {
-		return -1;
-	}
-	return 0;
+    
+    if (address+1 > mem->size)
+	return -1;
+    uint8_t * ad;
+    uint16_t val = 0;
+    int i;
+    ad = mem->address + address;
+
+    if (be == 0) {
+       for (i=0;i<=1;i++) {
+          val = val | *(ad+i) << (i*8);
+       }
+    } else {
+       for (i=1;i>=0;i--) {
+          val = val | *(ad+i) << ((1-i)*8);
+       }
+    }
+    *value = val;
+    return 0;
 }
 
 int memory_read_word(memory mem, int be, uint32_t address, uint32_t *value) {
-  
-  if ( (address+3) > (mem->size)-1){
-    return -1;
-  }
-  else 
-    {
- 
-      *value = *(mem->address + address + 3)<<24;
-      *value += *(mem->address + address + 2)<<16;
-      *value += *(mem->address + address + 1)<<8;
-      *value += *(mem->address + address);
+    
+    if (address+3 > mem->size)
+	return -1;
+    uint8_t * ad;
+    uint32_t val = 0;
+    int i;
+    ad = mem->address + address;
 
-      if ( be == 1)  
-	{
-	  *value=reverse_4(*value);
-	}   
+    if (be == 0) {
+       for (i=0;i<=3;i++) {
+          val = val | *(ad+i) << (i*8);
+       }
+    } else {
+       for (i=3;i>=0;i--) {
+          val = val | *(ad+i) << ((3-i)*8);
+       }
     }
-  return 0;
+    *value = val;
+    return 0;
 }
 
 int memory_write_byte(memory mem, uint32_t address, uint8_t value) {
-    if (address > (mem->size)-1){
-		return -1;
-	}
-    mem->address[address]= value;
+    
+    if (address > mem->size)
+	return -1;
+    uint8_t * ad;
+    ad = mem->address + address;
+    *ad = value;
     return 0;
 }
 
 int memory_write_half(memory mem, int be, uint32_t address, uint16_t value) {
+    
+    if (address+1 > mem->size)
+	return -1;
+    uint8_t * ad;
+    int i;
+    ad = mem->address + address;
 
-  uint8_t val;
-
-  if ( (address+1) > (mem->size)-1){
-		return -1;
-	}
-  else
-    {
-      if ( be==0)
-      {mem->address[address]= value;
-	val = value>>8;
-	mem->address[address+1]= val;
-      }
-      else {
-	val = value>>8;
-	memory_write_byte( mem, address, val );
-	val = value;
-	memory_write_byte( mem, (address+1), val );
-      }
+    if (be == 0) {
+       for (i=0;i<=1;i++) {
+          *(ad+i) = (value & 255 << (i*8)) >> (i*8);
+       }
+    } else {
+       for (i=1;i>=0;i--) {
+          *(ad+i) = (value & 255 << ((1-i)*8)) >> ((1-i)*8);
+       }
     }
-  return 0;
+    return 0;
 }
 
 int memory_write_word(memory mem, int be, uint32_t address, uint32_t value) {
-  
-   uint8_t val;
-  
-  if ( (address+3) > (mem->size)-1){
-    return -1;
-  }
-  else 
-    {
-      if (be==0)
-	{
-	  *(mem->address+address)=value;
-	}
-      else 
-	{
-	  //  *(mem->address+address)=reverse_4(value);
+    
+    if (address+3 > mem->size)
+	return -1;
+    uint8_t * ad;
+    int i;
+    ad = mem->address + address;
 
-	  val = value >> 24 ;
-	  memory_write_byte( mem, address, val );
-	  val = value >> 16 ;
-	  memory_write_byte( mem, address+1, val );
-	  val = value >> 8 ;
-	  memory_write_byte( mem, address+2, val );
-	  val = value ;
-	  memory_write_byte( mem, address+3, value );
-
-}
-      
+    if (be == 0) {
+       for (i=0;i<=3;i++) {
+          *(ad+i) = (value & 255 << (i*8)) >> (i*8);
+       }
+    } else {
+       for (i=3;i>=0;i--) {
+          *(ad+i) = (value & 255 << ((3-i)*8)) >> ((3-i)*8);
+       }
     }
-  return 0;
+    return 0;
 }
