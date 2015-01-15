@@ -29,3 +29,15 @@ Lundi 12/01
 * Écriture et test d'une nouvelle fonctions de mise à jour du flag C (BorrowFrom)
 * Écriture des fonctions d'accès à la mémoire STR et STRV (dans le fichier arm_load_store)
 * Correction de bugs divers
+
+Mardi 13/01
+(À compléter)
+
+Mercredi 14/01
+* Correction d'erreurs lors du déplacement dans les instructions, nottament lors des branchements (arm_instruction, arm_branch_other)
+* Poursuite de l'écriture des fonctions de arm_load_store
+* Résolution de conflits et d'erreurs dus à GitHub, création d'un gitignore
+(À compléter)
+
+Jeudi 15/01
+* Poursuite de l'écriture des fonctions de arm_load_store
