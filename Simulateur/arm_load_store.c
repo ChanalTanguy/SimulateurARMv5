@@ -32,39 +32,101 @@ int arm_load_store(arm_core p, uint32_t ins) {
 	uint8_t rd;
 	uint8_t rm;
 	uint8_t shift;
+	uint8_t value8;
 	uint8_t shift_imm;
-	uint32_t addresse;
-	uint32_t value;
+	uint16_t value16 ;
+	uint32_t adresse;
+	uint32_t value32;
 	uint32_t offset=0;
 	
 	
 	rn = get_bits(ins,19,16);
 	rd = get_bits(ins,15,12);
 	adresse = arm_read_register( p,rn);
-	value = arm_read_register(p,rd);
+	value32 = arm_read_register(p,rd);
 
 if (get_bits(ins,27,26) == 0)
 	{ //ldrH et strH
-		if (get_bit(ins,25)==0)// I
-		{offset = (get_bits(ins,11,8))| (get_bit_bits(ins,3,0);}
+	value16 = (uint16_t) value32;
+	if (get_bit(ins,25)==0)// I
+		{offset = (get_bits(ins,11,8))| (get_bits(ins,3,0));}
 	else 
 		{ 
 		rm=get_bits(ins,3,0);
 		offset = arm_read_register(p,rm);
 		}
-	}
+	if (get_bit(ins,24)==0)// P	
+		{//P=0 post indexed adressing
+		if (get_bit(ins,21)==0)//W
+			{//W=0 normal memory acces
+			if (get_bit(ins,20) == 0)//L
+				{// L=0 strh
+				value16 = (uint16_t) arm_read_register(p,rd);
+				arm_write_half(p,adresse,&value16);
+				}
+			else 
+				{ // L=1 ldrH
+				arm_read_half(p,adresse,&value16);
+				value32 = (uint32_t) value16;
+				arm_write_register(p,rn,value32);
+				}
+			adresse=offset_op(ins,adresse,offset);
+			arm_write_register(p,rn,adresse);
+			}	
+		else
+			{// W=1 
+				return UNDEFINED_INSTRUCTION; 
+			}
+		}
+	else 
+		{// P=1 offset 
+		if (get_bit(ins,21)==0)//W
+			{//W=0 offset adressing
+			adresse=offset_op(ins,adresse,offset);
+			if (get_bit(ins,20) == 0)//L
+				{
+				value32 = arm_read_register(p,rd);
+				value16 = (uint16_t) value32;
+				arm_write_half( p,address,&value16);
+				}
+			else 
+				{ // L=1 ldrh
+					arm_read_half(p,adresse,&value16);
+					value32 = (uint32_t) value16;
+					arm_write_register(p,rn,value32);
+				}
+			}
+		else
+			{// W=1 pre-addressing
+			adresse=offset_op(ins,adresse,offset);
+			arm_write_register(p,rn,adresse);
+			if (get_bit(ins,20) == 0)//L
+				{// L=0 strh
+				value32 = arm_read_register(p,rd);
+				value16 = (uint16_t) value32;
+				arm_write_half( p,address,&value16);	
+				}
+			else 
+				{ // L=1 ldrh 
+				arm_read_half(p,adresse,&value16);
+				value32 = (uint32_t) value16;
+				arm_write_register(p,rn,value32);	
+				}
+			}
+		}
+}	
 else
 	{ // ldr, ldrb, str, strb
 	if (get_bit(ins,25)==0)// I
 		{offset = get_bits(ins,11,0);}
 	else 
 		{
-		rm = gets_bits(ins,3,0);
+		rm = get_bits(ins,3,0);
 		offset = arm_read_register( p,rm);
-			if ( get_bit(ins,11,4)!=0 )
+			if ( get_bits(ins,11,4)!=0 )
 			{ 
-			shift =get_bit(ins,6,5);
-			shift_imm = get_bit(ins,11,7);
+			shift =get_bits(ins,6,5);
+			shift_imm = get_bits(ins,11,7);
 
 			switch (shift){
 				case 0 : //lsl
@@ -101,21 +163,26 @@ else
 						{// L=0 str et strb
 						if (get_bit(ins,22) == 0) //B	
 							{//B=0 str
-							arm_write_word( p,address,value);
+							value32 = arm_read_register(p,rd);
+							arm_write_word( p,address,&value32);
 							}
 							else
 							{// B=1 strb
-							arm_write_byte( p,address,value);
+							value8 = (uint8_t) arm_read_register(p,rd);
+							arm_write_byte( p,address,&value8);
 							}
 					else 
 					{ // L=1 ldr et ldrb
 						if (get_bit(ins,22) == 0) //B	
 							{//B=0 ldr
-							arm_read_word( p,address,value);
+							arm_read_word( p,address,&value32);
+							arm_write_register(p,rn,value32);
 							}
 							else
 							{// B=1 ldrb
-							arm_read_byte( p,address,value);
+							arm_read_byte( p,address,&value8);
+							value32 = (uint32_t) value8;
+							arm_write_register(p,rn,value32);
 							}
 					}
 				}
@@ -136,22 +203,27 @@ else
 				{// L=0 str et strb
 				if (get_bit(ins,22) == 0) //B	
 					{//B=0 str
-					arm_write_word( p,address,value);
+					value32 = arm_read_register(p,rd);
+					arm_write_word( p,address,&value32);
 					}
 				else
 					{// B=1 strb
-						arm_write_byte( p,address,value);
-						}
+					value8 = (uint8_t) arm_read_register(p,rd);
+					arm_write_byte( p,address,&value8);
+					}
 				}
 			else 
 				{ // L=1 ldr et ldrb
 				if (get_bit(ins,22) == 0) //B	
 					{//B=0 ldr
-					arm_read_word( p,address,value);
+					arm_read_word( p,address,&value32);
+					arm_write_register(p,rn,value32);
 					}
 				else
 					{// B=1 ldrb
-					arm_read_byte( p,address,value);
+					arm_read_byte( p,address,&value8);
+					value32 = (uint32_t) value8;
+					arm_write_register(p,rn,value32);					
 					}
 				}
 			}
@@ -163,10 +235,12 @@ else
 				{// L=0 str et strb
 				if (get_bit(ins,22) == 0) //B	
 					{//B=0 str
-					arm_write_word( p,address,value);
+					value32 = arm_read_register(p,rd);
+					arm_write_word( p,address,value32);
 					}
 				else
 					{// B=1 strb
+					value8 = (uint8_t) arm_read_register(p,rd);
 					arm_write_byte( p,address,value);
 					}
 				}
@@ -174,11 +248,14 @@ else
 				{ // L=1 ldr et ldrb
 				if (get_bit(ins,22) == 0) //B	
 					{//B=0 ldr
-					arm_read_word( p,address,value);
+					arm_read_word( p,address,value32);
+					arm_write_register(p,rn,value32);					
 					}
 				else
 					{// B=1 ldrb
-					arm_read_byte( p,address,value);
+					arm_read_byte( p,address,value8);
+					value32 = (uint32_t) value8;
+					arm_write_register(p,rn,value32);
 					}
 				}
 			} 
