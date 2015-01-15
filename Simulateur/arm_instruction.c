@@ -30,7 +30,7 @@ Contact: Guillaume.Huard@imag.fr
 
 static int arm_execute_instruction(arm_core p) {
     	uint32_t instr;
-	if (arm_fetch(p, &instr) == -1) return -1;
+	if (arm_fetch(p, &instr) == -1) return -1;		
 	uint8_t cond;
 
 	uint32_t flags = arm_read_cpsr(p); // Récupération du CPSR 
@@ -41,7 +41,7 @@ static int arm_execute_instruction(arm_core p) {
 	int z = get_bit(flags, 30);
 	int c = get_bit(flags, 29);
 	int v = get_bit(flags, 28);
-
+	
 	cond = get_bits(instr, 31, 28); // Récupération du code condition de l'instruction
 	int res = 0;
 	
@@ -88,18 +88,11 @@ static int arm_execute_instruction(arm_core p) {
 				}
 				break;
 			case 1 :
-				if (get_bits(instr,24,23) == 2) {
-					if (get_bits(instr,21,20) == 0) {
-						// Undefined instruction
-					} else if (get_bits(instr,21,20) == 2) {
-						// Move immediate to status register
-						arm_data_processing_immediate_msr(p, instr);
-					} else {
-						return -1;
-					}
-				} else {
-					// Data processing immediate			
-				}
+				if ((get_bits(instr,24,23) == 2) && (get_bits(instr,21,20) == 0)) {
+					// Undefined instruction
+				} 
+				else 	// Move immediate to status register
+					arm_data_processing_immediate_msr(p, instr);
 				break;
 			case 2 : // Load/store immediate offset
 				break;
