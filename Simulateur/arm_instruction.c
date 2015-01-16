@@ -1,19 +1,19 @@
 /*
-Armator - simulateur de jeu d'instruction ARMv5T à but pédagogique
+Armator - simulateur de jeu d'instruction ARMv5T Ã  but pÃ©dagogique
 Copyright (C) 2011 Guillaume Huard
 Ce programme est libre, vous pouvez le redistribuer et/ou le modifier selon les
-termes de la Licence Publique Générale GNU publiée par la Free Software
-Foundation (version 2 ou bien toute autre version ultérieure choisie par vous).
+termes de la Licence Publique GÃ©nÃ©rale GNU publiÃ©e par la Free Software
+Foundation (version 2 ou bien toute autre version ultÃ©rieure choisie par vous).
 
-Ce programme est distribué car potentiellement utile, mais SANS AUCUNE
+Ce programme est distribuÃ© car potentiellement utile, mais SANS AUCUNE
 GARANTIE, ni explicite ni implicite, y compris les garanties de
-commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
-Licence Publique Générale GNU pour plus de détails.
+commercialisation ou d'adaptation dans un but spÃ©cifique. Reportez-vous Ã  la
+Licence Publique GÃ©nÃ©rale GNU pour plus de dÃ©tails.
 
-Vous devez avoir reçu une copie de la Licence Publique Générale GNU en même
-temps que ce programme ; si ce n'est pas le cas, écrivez à la Free Software
+Vous devez avoir reÃ§u une copie de la Licence Publique GÃ©nÃ©rale GNU en mÃªme
+temps que ce programme ; si ce n'est pas le cas, Ã©crivez Ã  la Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
-États-Unis.
+Ã‰tats-Unis.
 
 Contact: Guillaume.Huard@imag.fr
          ENSIMAG - Laboratoire LIG
@@ -33,7 +33,7 @@ static int arm_execute_instruction(arm_core p) {
 	if (arm_fetch(p, &instr) == -1) return -1;		
 	uint8_t cond;
 
-	uint32_t flags = arm_read_cpsr(p); // Récupération du CPSR 
+	uint32_t flags = arm_read_cpsr(p); // RÃ©cupÃ©ration du CPSR 
 	
 	// Le CPSR contient les flags ZNCV : http://www.heyrick.co.uk/armwiki/The_Status_register
 	
@@ -42,7 +42,7 @@ static int arm_execute_instruction(arm_core p) {
 	int c = get_bit(flags, 29);
 	int v = get_bit(flags, 28);
 	
-	cond = get_bits(instr, 31, 28); // Récupération du code condition de l'instruction
+	cond = get_bits(instr, 31, 28); // RÃ©cupÃ©ration du code condition de l'instruction
 	int res = 0;
 	
 	switch (cond) {
@@ -82,6 +82,7 @@ static int arm_execute_instruction(arm_core p) {
 						arm_data_processing_shift(p, instr);
 					} else if (get_bit(instr, 7) == 1) {
 						// Multiplies / Extra load/stores
+						arm_load_store(p, instr);
 					} else {
 						return -1;
 					}
@@ -95,9 +96,11 @@ static int arm_execute_instruction(arm_core p) {
 					arm_data_processing_immediate_msr(p, instr);
 				break;
 			case 2 : // Load/store immediate offset
+				arm_load_store(p, instr);
 				break;
 			case 3 : if (get_bit(instr,4) == 0) {
 						// Load/store register offset
+						arm_load_store(p, instr);
 					} else if ((get_bits(instr,24,20) == 31) && (get_bits(instr,7,4) == 15)) {
 						// Architecturally undefined
 					} else {
